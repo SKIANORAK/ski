@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>С днем рождения!</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      overflow: hidden;
+      transition: background-image 1s ease-in-out;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+      padding: 20px;
+    }
+    #love-message {
+      font-size: 5vw; /* Изменено на vw для адаптивности */
+      color: #ff5733; 
+      font-weight: bold;
+      margin-bottom: 20px;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      white-space: pre;
+      text-shadow: 0 0 10px black; 
+    }
+    #love-button {
+      padding: 2vw 5vw; /* Изменено на vw для адаптивности */
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 2vw; /* Изменено на vw для адаптивности */
+      margin-top: 20px;
+      width: 80%;
+      max-width: 300px; /* Ограничение максимальной ширины кнопки */
+    }
+    .rain-heart {
+      position: absolute;
+      font-size: 2em;
+      opacity: 0.8;
+      animation: fall 3s linear infinite;
+    }
+    @keyframes fall {
+      0% {
+        top: -10%;
+        opacity: 1;
+      }
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
+    @media (max-width: 768px) {
+      #love-message {
+        font-size: 4vw; 
+      }
+      #love-button {
+        font-size: 1.5em; 
+        padding: 10px 20px;
+      }
+      .rain-heart {
+        font-size: 1.5em; 
+      }
+    }
+    @media (max-width: 480px) {
+      #love-message {
+        font-size: 3.5vw; 
+      }
+      #love-button {
+        font-size: 1.2em; 
+        padding: 8px 16px; 
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="love-message">С днем рождения Настюшаа!</div>
+    <canvas id="canvas" width="400" height="400" style="display: none;"></canvas>
+    <button id="love-button">Поздравить</button>
+  </div>
+  <script>
+    const loveButton = document.getElementById('love-button');
+    const loveMessage = document.getElementById('love-message');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const backgrounds = [
+      'https://steamuserimages-a.akamaihd.net/ugc/2374046093386834652/CA0A577D05DC150F020EB3D1E2D9E052C58FA2BC/?imw=512&imh=281&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true'
+    ];
+    
+    let currentBackground = 0;
+
+    function changeBackground() {
+      currentBackground = (currentBackground + 1) % backgrounds.length;
+      document.body.style.backgroundImage = `url('${backgrounds[currentBackground]}')`;
+    }
+
+    function drawHeart() {
+      context.strokeStyle = "#000000";
+      context.lineWidth = 10.0;
+      context.fillStyle = "#FF0000";
+      const w = 200, h = 200;
+      const k = 100; // Центр сердца
+      const d = 100; // Размеры сердца
+
+      context.beginPath();
+      context.moveTo(k, k + d / 4);
+      context.quadraticCurveTo(k - d / 2, k, k, k - d / 4);
+      context.quadraticCurveTo(k + d / 2, k, k + d / 2, k + d / 4);
+      context.quadraticCurveTo(k + d / 2, k + d / 2, k + d / 4, k + d / 2);
+      context.quadraticCurveTo(k, k + d / 2, k, k + d / 4);
+      context.fill();
+      context.stroke();
+    }
+
+    function createFallingHearts() {
+      const heart = document.createElement('div');
+      heart.className = 'rain-heart';
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    loveButton.addEventListener('click', () => {
+      loveMessage.style.opacity = 1;
+      changeBackground();
+      drawHeart();
+      setInterval(createFallingHearts, 50); // Интервал для создания сердечек
+      loveButton.style.display = 'none'; // Скрываем кнопку после нажатия
+    });
+
+  </script>
+</body>
+</html>
+
